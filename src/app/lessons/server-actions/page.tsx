@@ -4,20 +4,19 @@ import { useState } from 'react';
 import CodeBlock from '@/components/CodeBlock';
 import { useLanguage } from '@/context/LanguageContext';
 
+import { logOnServer } from './actions';
+
 export default function ServerActionsPage() {
     const { dict } = useLanguage();
     const t = dict.lessons.serverActions;
     const [response, setResponse] = useState<string | null>(null);
 
-    // In a real app, this would be in a separate file like 'actions.ts' marked with "use server"
-    // Since we are in a "use client" page for learning, we simulate the effect.
-    const simulateServerAction = async (formData: FormData) => {
-        // Artificial delay
-        await new Promise(resolve => setTimeout(resolve, 800));
-
-        // Process "server side"
-        const message = formData.get('message');
-        setResponse(`${t.success} "${message}" (Processed at ${new Date().toLocaleTimeString()})`);
+    const handleServerAction = async (formData: FormData) => {
+        // Call the real server action
+        const result = await logOnServer(formData);
+        
+        // Update UI with the response from server
+        setResponse(`${t.success} "${result.message}"`);
     };
 
     return (
@@ -36,7 +35,7 @@ export default function ServerActionsPage() {
                     <h2 className="text-2xl font-semibold text-red-400 mb-4">{t.formTitle}</h2>
                     <p className="text-slate-400 mb-6">{t.desc}</p>
 
-                    <form action={simulateServerAction} className="space-y-4 bg-slate-900 p-6 rounded-xl border border-slate-800">
+                    <form action={handleServerAction} className="space-y-4 bg-slate-900 p-6 rounded-xl border border-slate-800">
                         <div>
                             <label className="block text-sm font-medium text-slate-300 mb-2">{t.label}</label>
                             <input
@@ -63,16 +62,18 @@ export default function ServerActionsPage() {
 
                 <CodeBlock
                     title="actions.ts (Server Code)"
-                    code={`'use server';
+                    code={`// src/app/lessons/server-actions/actions.ts
+'use server';
 
-export async function submitMessage(formData: FormData) {
+export async function logOnServer(formData: FormData) {
   const message = formData.get('message');
   
-  // Save to DB directly
-  await db.messages.create({ text: message });
+  console.log('📝 Server Action Triggered!');
+  console.log(\`📩 Received Message: "\${message}"\`);
   
-  // Revalidate cache to update UI
-  revalidatePath('/messages');
+  return {
+    message: \`Server logged: "\${message}"\`
+  };
 }`}
                 />
             </div>

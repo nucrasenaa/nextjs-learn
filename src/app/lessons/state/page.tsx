@@ -119,7 +119,7 @@ const [count, setCount] = useState(0);
                     <div>
                         <CodeBlock
                             title="ObjectUpdated.tsx"
-                            code={`{/* ❌ Correct way to update object: Spread first! */}
+                            code={`{/* ✅ Correct way to update object: Spread first! */}
 setUser({ ...user, name: 'John Doe' });`}
                         />
                     </div>

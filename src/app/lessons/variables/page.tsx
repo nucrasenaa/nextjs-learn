@@ -46,7 +46,8 @@ export default function VariablesPage() {
                 </p>
                 <CodeBlock
                     title="const_example.ts"
-                    code={`const pi = 3.14159;
+                    code={`const demoConst = 100;
+const pi = 3.14159;
 const appName = "Next.js Learn";
 
 // ${t.constError}

@@ -7,84 +7,38 @@ export default function Home() {
   const { dict } = useLanguage();
 
   const topics = [
-    {
-      ...dict.home.topics[0],
-      href: "/lessons/variables",
-      color: "from-pink-500 to-rose-500",
-    },
-    {
-      ...dict.home.topics[1],
-      href: "/lessons/state",
-      color: "from-purple-500 to-indigo-500",
-    },
-    {
-      ...dict.home.topics[2],
-      href: "/lessons/effects",
-      color: "from-cyan-500 to-blue-500",
-    },
-    {
-      ...dict.home.topics[3],
-      href: "/lessons/fetching-fetch",
-      color: "from-emerald-500 to-teal-500",
-    },
-    {
-      ...dict.home.topics[4],
-      href: "/lessons/fetching-axios",
-      color: "from-orange-500 to-amber-500",
-    },
-    // Advanced
-    {
-      ...dict.home.topics[5],
-      href: "/lessons/routing",
-      color: "from-teal-500 to-green-500",
-    },
-    {
-      ...dict.home.topics[6],
-      href: "/lessons/rsc",
-      color: "from-blue-500 to-indigo-500",
-    },
-    {
-      ...dict.home.topics[7],
-      href: "/lessons/server-actions",
-      color: "from-red-500 to-orange-500",
-    },
-    {
-      ...dict.home.topics[8],
-      href: "/lessons/context",
-      color: "from-purple-500 to-pink-500",
-    },
-    // State Management Advanced
-    {
-      ...dict.home.topics[12],
-      href: "/lessons/state-redux",
-      color: "from-purple-600 to-indigo-600",
-    },
-    {
-      ...dict.home.topics[13],
-      href: "/lessons/state-zustand",
-      color: "from-yellow-400 to-orange-500",
-    },
-    {
-      ...dict.home.topics[14],
-      href: "/lessons/workshop-pokemon",
-      color: "from-red-600 to-rose-600",
-    },
-    // UI/CSS
-    {
-      ...dict.home.topics[9],
-      href: "/lessons/css-layout",
-      color: "from-blue-400 to-cyan-400",
-    },
-    {
-      ...dict.home.topics[10],
-      href: "/lessons/css-responsive",
-      color: "from-pink-500 to-rose-500",
-    },
-    {
-      ...dict.home.topics[11],
-      href: "/lessons/css-animation",
-      color: "from-violet-500 to-fuchsia-500",
-    }
+    // --- BASIC ---
+    { ...dict.home.topics[0], href: "/lessons/variables", color: "from-pink-500 to-rose-500" },
+    { ...dict.home.topics[1], href: "/lessons/state", color: "from-purple-500 to-indigo-500" },
+    { ...dict.home.topics[2], href: "/lessons/tsx-fundamentals", color: "from-blue-500 to-cyan-500" },
+    { ...dict.home.topics[3], href: "/lessons/effects", color: "from-cyan-500 to-blue-500" },
+    { ...dict.home.topics[4], href: "/lessons/fetching-fetch", color: "from-emerald-500 to-teal-500" },
+    { ...dict.home.topics[5], href: "/lessons/fetching-axios", color: "from-orange-500 to-amber-500" },
+
+    // --- NEXT.js CORE ---
+    { ...dict.home.topics[6], href: "/lessons/routing", color: "from-teal-400 to-green-500" },
+    { ...dict.home.topics[7], href: "/lessons/rsc", color: "from-blue-500 to-indigo-500" },
+    { ...dict.home.topics[8], href: "/lessons/server-actions", color: "from-red-500 to-orange-500" },
+    
+    // --- STATE MANAGEMENT ---
+    { ...dict.home.topics[9], href: "/lessons/context", color: "from-purple-500 to-pink-500" },
+    { ...dict.home.topics[13], href: "/lessons/state-redux", color: "from-purple-600 to-indigo-600" },
+    { ...dict.home.topics[14], href: "/lessons/state-zustand", color: "from-yellow-400 to-orange-500" },
+
+    // --- UI & STYLING ---
+    { ...dict.home.topics[10], href: "/lessons/css-layout", color: "from-sky-400 to-blue-400" },
+    { ...dict.home.topics[11], href: "/lessons/css-responsive", color: "from-pink-500 to-rose-500" },
+    { ...dict.home.topics[12], href: "/lessons/css-animation", color: "from-violet-500 to-fuchsia-500" },
+    { ...dict.home.topics[16], href: "/lessons/ui-advanced", color: "from-cyan-400 to-blue-500" },
+    { ...dict.home.topics[17], href: "/lessons/framer-motion", color: "from-purple-400 to-pink-500" },
+
+    // --- FULL STACK ---
+    { ...dict.home.topics[18], href: "/lessons/form-validation", color: "from-emerald-400 to-teal-500" },
+    { ...dict.home.topics[19], href: "/lessons/special-files", color: "from-orange-400 to-red-500" },
+    { ...dict.home.topics[20], href: "/lessons/auth", color: "from-indigo-400 to-blue-600" },
+
+    // --- WORKSHOP ---
+    { ...dict.home.topics[15], href: "/lessons/workshop-pokemon", color: "from-red-600 to-rose-600" },
   ];
 
   return (

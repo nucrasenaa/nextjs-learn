@@ -8,6 +8,7 @@ export const dictionary = {
             home: 'หน้าหลัก',
             variables: 'ตัวแปร (Const/Let)',
             state: 'สถานะ (useState)',
+            tsxFundamentals: 'TSX Fundamentals (Map/If)',
             effects: 'ผลข้างเคียง (useEffect)',
             fetch: 'การดึงข้อมูล (Fetch)',
             axios: 'การดึงข้อมูล (Axios)',
@@ -21,6 +22,11 @@ export const dictionary = {
             stateRedux: 'State: Redux Toolkit',
             stateZustand: 'State: Zustand',
             workshopPokemon: 'Workshop: Pokedex',
+            uiAdvanced: 'Advanced Tailwind UI',
+            framerMotion: 'Framer Motion (Animation)',
+            formValidation: 'Forms & Validation (Zod)',
+            specialFiles: 'Special Files (Loading/Error)',
+            auth: 'Authentication (Concept)'
         },
         home: {
             title: 'ยินดีต้อนรับสู่การเรียนรู้ Next.js',
@@ -34,6 +40,10 @@ export const dictionary = {
                 {
                     title: "การจัดการสถานะ (State)",
                     desc: "เรียนรู้วิธีใช้ useState สำหรับการโต้ตอบ",
+                },
+                {
+                    title: "TSX & Rendering",
+                    desc: "การใช้ .map(), Conditional Rendering และ Fragments",
                 },
                 {
                     title: "ผลข้างเคียง (Side Effects)",
@@ -82,6 +92,30 @@ export const dictionary = {
                 {
                     title: "Zustand",
                     desc: "ทางเลือกใหม่ที่ง่าย เบา และไม่ต้องใช้ Provider",
+                },
+                {
+                    title: "Workshop: Pokedex",
+                    desc: "สร้างแอพ Pokedex ด้วย Next.js",
+                },
+                {
+                    title: "Advanced Tailwind UI",
+                    desc: "เทคนิคขั้นสูง: Glassmorphism, Group Hover และการสร้าง Design System",
+                },
+                {
+                    title: "Framer Motion",
+                    desc: "สร้าง Animation ระดับมืออาชีพที่ลื่นไหลและซับซ้อน",
+                },
+                {
+                    title: "Smart Forms (Zod)",
+                    desc: "การตรวจสอบความถูกต้องของฟอร์มแบบมือโปร"
+                },
+                {
+                    title: "Loading & Error Files",
+                    desc: "จัดการสถานะการโหลดและ Error อย่างมีระบบ"
+                },
+                {
+                    title: "Authentication",
+                    desc: "แนวคิดระบบล็อกอินและ Middleware"
                 }
             ]
         },
@@ -121,6 +155,21 @@ export const dictionary = {
                 btnAdd: '+ เพิ่ม',
                 btnPop: '- ลบตัวหลัง',
                 btnFilter: 'ลบ Index 1'
+            },
+            tsxFundamentals: {
+                title: 'พื้นฐาน TSX Rendering',
+                intro: 'TSX คือส่วนผสมของ HTML และ JavaScript ทำให้เราสามารถเขียน Logic การแสดงผลได้โดยตรง',
+                mapTitle: '1. การวนลูปแสดงผล (.map)',
+                mapDesc: 'ใน React เราใช้ .map() แทน for-loop เพื่อแปลง Array เป็น Elements',
+                condTitle: '2. เงื่อนไขอย่างง่าย (Short Circuit &&)',
+                condShow: 'แสดงข้อความ',
+                condHide: 'ซ่อนข้อความ',
+                ternaryTitle: '3. เลือกแสดงผล (Ternary ? :)',
+                loggedIn: 'เข้าสู่ระบบแล้ว (User)',
+                guest: 'ยังไม่ได้ล็อกอิน (Guest)',
+                toggleLogin: 'สลับสถานะ',
+                fragmentTitle: '4. Fragments (<>...</>)',
+                fragmentDesc: 'ใช้เมื่อต้องการ Return หลาย Element โดยไม่ต้องเพิ่ม <div> ครอบ'
             },
             effects: {
                 title: 'ผลข้างเคียง: useEffect',
@@ -207,7 +256,12 @@ export const dictionary = {
                 demoTitle: 'Context Demo (User)',
                 login: 'เข้าสู่ระบบ (จำลอง)',
                 logout: 'ออกจากระบบ',
-                welcome: 'ยินดีต้อนรับ, '
+                welcome: 'ยินดีต้อนรับ, ',
+                splitTitle: 'แทนที่จะเขียนทุกอย่างรวมกันในไฟล์เดียว เราจะแยกโค้ดออกเป็น 3 ส่วนเพื่อการจัดการที่ง่ายขึ้น:',
+                fileContext: '1. UserContext.tsx (เก็บ Logic)',
+                fileConsumer: '2. UserStatus.tsx (คนเอาไปใช้)',
+                filePage: '3. Page.tsx (หน้าแสดงผล)',
+                fileLayout: '4. layout.tsx (ตัวอย่าง Global)'
             },
             cssLayout: {
                 title: 'Layout Masters: Flexbox & Grid',
@@ -266,7 +320,13 @@ export const dictionary = {
                 userName: 'ชื่อผู้ใช้',
                 userRole: 'ตำแหน่ง',
                 updateProfile: 'อัพเดทโปรไฟล์',
-                note: '* สังเกตว่าเมื่อ Component A อัพเดทค่า -> Component B จะเปลี่ยนตามทันทีโดยไม่ต้องส่ง Props'
+                note: '* สังเกตว่าเมื่อ Component A อัพเดทค่า -> Component B จะเปลี่ยนตามทันทีโดยไม่ต้องส่ง Props',
+                splitTitle: 'โครงสร้างไฟล์ Redux ที่ดีควรแยกเป็นส่วนๆ:',
+                fileStore: '1. store.ts (Logic & Store)',
+                fileCounter: '2. Counter.tsx (Consumers)',
+                filePage: '3. Page.tsx (Provider & Layout)',
+                fileUserSlice: '4. store.ts (User Slice)',
+                fileUserComponents: '5. UserProfile.tsx (Components)'
             },
             stateZustand: {
                 title: 'Zustand',
@@ -287,7 +347,11 @@ export const dictionary = {
                 bears: 'หมี',
                 addBear: 'เพิ่มหมี',
                 removeBear: 'ลดหมี',
-                clear: 'ล้างหมด'
+                clear: 'ล้างหมด',
+                splitTitle: 'แยกไฟล์เพื่อความชัดเจน:',
+                fileStore: '1. store.ts (สร้าง Store)',
+                fileComponent: '2. BearCounter.tsx (นำไปใช้)',
+                filePage: '3. page.tsx (หน้าหลัก)'
             },
             workshopPokemon: {
                 title: 'Workshop: Pokedex App',
@@ -302,7 +366,76 @@ export const dictionary = {
                 height: 'ความสูง',
                 weight: 'น้ำหนัก',
                 abilities: 'ความสามารถ',
-                stats: 'ค่าสถานะ'
+                stats: 'ค่าสถานะ',
+                renderTitle: '3. การแสดงผล (Rendering List)'
+            },
+            uiAdvanced: {
+                title: 'Advanced Tailwind UI',
+                intro: 'ยกระดับ UI ของคุณด้วยเทคนิค Tailwind ขั้นสูง: การทำ Glassmorphism, Component Variants และ Selectors พิเศษ',
+                glassTitle: '1. Glassmorphism (กระจก)',
+                glassDesc: 'การใช้ backdrop-blur และสีโปร่งใสเพื่อสร้าง effect เหมือนกระจกฝ้า',
+                trickTitle: '2. Magic Selectors (Group & Peer)',
+                trickDesc: 'ควบคุมลูกด้วยพ่อ (Group) และควบคุมเพื่อนข้างๆ (Peer) โดยไม่ต้องเขียน JS',
+                hoverMe: 'ชี้ฉันสิ (Group)',
+                imChild: 'ฉันเป็นลูก',
+                checkMe: 'ติ๊กฉันสิ (Peer)',
+                imPeer: 'ฉันเป็นเพียร์',
+                designTitle: '3. Component Design System',
+                designDesc: 'การสร้าง Reusable Component ที่มีความยืดหยุ่นสูงด้วย clsx และ tailwind-merge',
+                btnPrimary: 'ปุ่มหลัก',
+                btnSecondary: 'ปุ่มรอง',
+                btnGhost: 'ปุ่มใส'
+            },
+            framerMotion: {
+                title: 'Framer Motion',
+                intro: 'Library สำหรับทำ Animation ที่ดีที่สุดใน React ใช้งานง่ายและทรงพลัง',
+                basicTitle: '1. Basic Animation',
+                basicDesc: 'กำหนดสถานะ initial (เริ่ม), animate (จบ) และ transition (ระยะเวลา)',
+                gestureTitle: '2. Gestures (Hover & Tap)',
+                gestureDesc: 'รองรับการโต้ตอบเช่น ชี้ (Hover) และ กด (Tap) ได้ในตัว',
+                layoutTitle: '3. Layout Animations',
+                layoutDesc: 'Animation เปลี่ยนตำแหน่งอัตโนมัติเมื่อ Layout เปลี่ยน (ตัวอย่าง: สลับรายการ)',
+                box: 'กล่อง',
+                shuffle: 'สลับตำแหน่ง'
+            },
+            formValidation: {
+                title: 'Professional Forms',
+                intro: 'การรวมพลังของ React Hook Form (จัดการ State) และ Zod (ตรวจสอบ Schema) เพื่อสร้างฟอร์มที่สมบูรณ์แบบ',
+                basicTitle: '1. แบบฟอร์มลงทะเบียน (Registration Form)',
+                basicDesc: 'ลองกด Submit โดยไม่กรอกข้อมูลดูสิ! ระบบจะเช็ค: อีเมลต้องถูก format, รหัสผ่านต้องยาว 6+ ตัว และต้องตรงกัน',
+                username: 'ชื่อผู้ใช้',
+                email: 'อีเมล',
+                password: 'รหัสผ่าน',
+                confirmPassword: 'ยืนยันรหัสผ่าน',
+                submit: 'ลงทะเบียน',
+                submitting: 'กำลังส่งข้อมูล...',
+                success: 'ลงทะเบียนสำเร็จ! Console Log ข้อมูลให้แล้วครับ'
+            },
+            specialFiles: {
+                title: 'Loading & Error Files',
+                intro: 'Next.js App Router มีไฟล์พิเศษที่ช่วยจัดการสถานะ UI ให้เราอัตโนมัติ ไม่ต้องเขียน if-else loading เองอีกต่อไป',
+                loadingTitle: '1. loading.tsx',
+                loadingDesc: 'ไฟล์นี้จะทำงานทันทีเมื่อ Route กำลังโหลดข้อมูล (Suspense) เรามักใช้แสดง Skeleton UI',
+                simulateLoad: 'จำลองการโหลด (Delay 3 วิ)',
+                errorTitle: '2. error.tsx',
+                errorDesc: 'ไฟล์นี้เปรียบเสมือน Safety Net (Error Boundary) ถ้า Component ไหนพัง หน้าเว็บจะไม่ขาวโพลน แต่จะโชว์หน้านี้แทน',
+                simulateError: 'จำลอง Error (ระเบิด!)',
+                resetBtn: 'ลองใหม่ (Reset Error)',
+                loaded: 'โหลดเสร็จแล้ว! 🎉'
+            },
+            auth: {
+                title: 'Authentication Concept',
+                intro: 'การทำระบบ Auth ใน Next.js มักใช้ร่วมกับ Middleware เพื่อป้องกัน Route และจัดการ Session',
+                conceptTitle: '1. Authentication Pattern',
+                conceptDesc: 'ระบบจะตรวจสอบว่าคุณมี Session/Token หรือไม่ ถ้าไม่มีจะดีดกลับไปหน้า Login',
+                status: 'สถานะปัจจุบัน:',
+                loggedIn: 'เข้าสู่ระบบแล้ว (Admin)',
+                loggedOut: 'ยังไม่เข้าสู่ระบบ',
+                loginBtn: 'เข้าสู่ระบบ (Set Cookie)',
+                logoutBtn: 'ออกจากระบบ (Clear Cookie)',
+                protectedTitle: '2. Protected Route Simulation',
+                protectedDesc: 'ลองพยายามเข้าถึงข้อมูลความลับ ถ้ายังไม่ Login คุณจะเข้าไม่ได้',
+                secret: 'นี่คือข้อมูลความลับสุดยอด! 🤫'
             }
         }
     },
@@ -313,6 +446,7 @@ export const dictionary = {
             home: 'Home',
             variables: 'Variables (Const/Let)',
             state: 'State (useState)',
+            tsxFundamentals: 'TSX Fundamentals',
             effects: 'Effects (useEffect)',
             fetch: 'Fetching (Fetch API)',
             axios: 'Fetching (Axios)',
@@ -326,6 +460,11 @@ export const dictionary = {
             stateRedux: 'State: Redux Toolkit',
             stateZustand: 'State: Zustand',
             workshopPokemon: 'Workshop: Pokedex',
+            uiAdvanced: 'Advanced Tailwind UI',
+            framerMotion: 'Framer Motion',
+            formValidation: 'Forms & Validation (Zod)',
+            specialFiles: 'Special Files',
+            auth: 'Authentication'
         },
         home: {
             title: 'Welcome to Next.js Learning',
@@ -339,6 +478,10 @@ export const dictionary = {
                 {
                     title: "State Management",
                     desc: "Learn how to use useState for interactivity.",
+                },
+                {
+                    title: "TSX & Rendering",
+                    desc: "Mastering .map(), Conditional Logic, and Fragments.",
                 },
                 {
                     title: "Side Effects",
@@ -387,6 +530,30 @@ export const dictionary = {
                 {
                     title: "Zustand",
                     desc: "Simple, scalable state management without providers.",
+                },
+                {
+                    title: "Workshop: Pokedex",
+                    desc: "Build a Pokedex app with Next.js.",
+                },
+                {
+                    title: "Advanced Tailwind UI",
+                    desc: "Master Glassmorphism, Group Selectors, and helper utilities.",
+                },
+                {
+                    title: "Framer Motion",
+                    desc: "Create production-ready complex animations easily.",
+                },
+                {
+                    title: "Smart Forms",
+                    desc: "Pro-level form handling and validation.",
+                },
+                {
+                    title: "Loading & Error",
+                    desc: "Handle loading states and unexpected errors automatically.",
+                },
+                {
+                    title: "Authentication",
+                    desc: "Secure your app with auth patterns and middleware.",
                 }
             ]
         },
@@ -426,6 +593,21 @@ export const dictionary = {
                 btnAdd: '+ Add',
                 btnPop: '- Pop',
                 btnFilter: 'Remove Index 1'
+            },
+            tsxFundamentals: {
+                title: 'TSX Fundamentals',
+                intro: 'TSX combines HTML and JavaScript, allowing powerful rendering logic directly in your markup.',
+                mapTitle: '1. List Rendering (.map)',
+                mapDesc: 'Use .map() to transform arrays into visual elements. No for-loops needed.',
+                condTitle: '2. Short Circuit (&&)',
+                condShow: 'Show Message',
+                condHide: 'Hide Message',
+                ternaryTitle: '3. Ternary Operator (? :)',
+                loggedIn: 'Logged In (User)',
+                guest: 'Guest Mode',
+                toggleLogin: 'Toggle State',
+                fragmentTitle: '4. Fragments (<>...</>)',
+                fragmentDesc: 'Return multiple elements without adding an extra <div> to the DOM.'
             },
             effects: {
                 title: 'Side Effects: useEffect',
@@ -512,7 +694,12 @@ export const dictionary = {
                 demoTitle: 'Context Demo (User)',
                 login: 'Login (Simulated)',
                 logout: 'Logout',
-                welcome: 'Welcome, '
+                welcome: 'Welcome, ',
+                splitTitle: 'Instead of writing everything in one file, we split the code into 3 parts for better maintainability:',
+                fileContext: '1. UserContext.tsx (Logic)',
+                fileConsumer: '2. UserStatus.tsx (Consumer)',
+                filePage: '3. Page.tsx (Usage)',
+                fileLayout: '4. layout.tsx (Global Usage)'
             },
             cssLayout: {
                 title: 'Layout Masters: Flexbox & Grid',
@@ -571,7 +758,13 @@ export const dictionary = {
                 userName: 'Username',
                 userRole: 'Role',
                 updateProfile: 'Update Profile',
-                note: '* Observation: When Component A updates, Component B reflects changes instantly without props.'
+                note: '* Observation: When Component A updates, Component B reflects changes instantly without props.',
+                splitTitle: 'Redux structure should be split for scalability:',
+                fileStore: '1. store.ts (Logic & Store)',
+                fileCounter: '2. Counter.tsx (Consumers)',
+                filePage: '3. Page.tsx (Provider & Layout)',
+                fileUserSlice: '4. store.ts (User Slice)',
+                fileUserComponents: '5. UserProfile.tsx (Components)'
             },
             stateZustand: {
                 title: 'Zustand',
@@ -592,7 +785,11 @@ export const dictionary = {
                 bears: 'Bears',
                 addBear: 'Add Bear',
                 removeBear: 'Remove Bear',
-                clear: 'Clear'
+                clear: 'Clear',
+                splitTitle: 'Separating files for clarity:',
+                fileStore: '1. store.ts (Store Definition)',
+                fileComponent: '2. BearCounter.tsx (Usage)',
+                filePage: '3. page.tsx (Main Page)'
             },
             workshopPokemon: {
                 title: 'Workshop: Pokedex App',
@@ -607,7 +804,76 @@ export const dictionary = {
                 height: 'Height',
                 weight: 'Weight',
                 abilities: 'Abilities',
-                stats: 'Stats'
+                stats: 'Stats',
+                renderTitle: '3. Rendering List (Map)'
+            },
+            uiAdvanced: {
+                title: 'Advanced Tailwind UI',
+                intro: 'Level up your UI with advanced Tailwind techniques: Glassmorphism, Variants, and Special Selectors.',
+                glassTitle: '1. Glassmorphism',
+                glassDesc: 'Using backdrop-blur and transparent colors to create frosted glass effects.',
+                trickTitle: '2. Magic Selectors (Group & Peer)',
+                trickDesc: 'Control children with parent state (Group) and siblings with neighbor state (Peer).',
+                hoverMe: 'Hover Me (Group)',
+                imChild: 'I am Child',
+                checkMe: 'Check Me (Peer)',
+                imPeer: 'I am Peer',
+                designTitle: '3. Component Design System',
+                designDesc: 'Building flexible reusable components with clsx and tailwind-merge.',
+                btnPrimary: 'Primary',
+                btnSecondary: 'Secondary',
+                btnGhost: 'Ghost'
+            },
+            framerMotion: {
+                title: 'Framer Motion',
+                intro: 'The best animation library for React. Simple yet extremely powerful.',
+                basicTitle: '1. Basic Animation',
+                basicDesc: 'Define initial, animate, and transition states.',
+                gestureTitle: '2. Gestures (Hover & Tap)',
+                gestureDesc: 'Built-in support for interactions like Hover and Tap.',
+                layoutTitle: '3. Layout Animations',
+                layoutDesc: 'Automatic position animation when layout changes (e.g. reordering list).',
+                box: 'Box',
+                shuffle: 'Shuffle'
+            },
+            formValidation: {
+                title: 'Professional Forms',
+                intro: 'Combining React Hook Form (State) and Zod (Schema) for perfect form validation.',
+                basicTitle: '1. Registration Form',
+                basicDesc: 'Try submitting empty. It checks: email format, min password length, and matching passwords.',
+                username: 'Username',
+                email: 'Email',
+                password: 'Password',
+                confirmPassword: 'Confirm Password',
+                submit: 'Register',
+                submitting: 'Submitting...',
+                success: 'Registration Successful! Check console.'
+            },
+            specialFiles: {
+                title: 'Loading & Error Files',
+                intro: 'Next.js uses special files to handle UI states automatically, removing the need for manual if-else loading checks.',
+                loadingTitle: '1. loading.tsx',
+                loadingDesc: 'Automatically shown while the route is fetching data (Suspense). Great for Skeletons.',
+                simulateLoad: 'Simulate Load (3s Delay)',
+                errorTitle: '2. error.tsx',
+                errorDesc: 'Acts as a Safety Net (Error Boundary). If a component crashes, this UI is shown instead of a white screen.',
+                simulateError: 'Simulate Error (Crash!)',
+                resetBtn: 'Try Again (Reset Error)',
+                loaded: 'Loaded Successfully! 🎉'
+            },
+            auth: {
+                title: 'Authentication Concept',
+                intro: 'Auth in Next.js works with Middleware to protect routes and manage sessions.',
+                conceptTitle: '1. Authentication Pattern',
+                conceptDesc: 'Checks for Session/Token. Redirects to Login if missing.',
+                status: 'Current Status:',
+                loggedIn: 'Logged In (Admin)',
+                loggedOut: 'Logged Out',
+                loginBtn: 'Login (Set Cookie)',
+                logoutBtn: 'Logout (Clear Cookie)',
+                protectedTitle: '2. Protected Route Simulation',
+                protectedDesc: 'Try accessing the secret data. You cannot see it unless logged in.',
+                secret: 'This is top secret data! 🤫'
             }
         }
     }

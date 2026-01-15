@@ -1,55 +1,9 @@
 'use client';
 
-import { useState, createContext, useContext } from 'react';
 import CodeBlock from '@/components/CodeBlock';
 import { useLanguage } from '@/context/LanguageContext';
-
-// 1. Create Context
-const UserContext = createContext<{ user: string | null; login: () => void; logout: () => void } | null>(null);
-
-// 2. Provider Component (Simulated for this page only)
-const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<string | null>(null);
-    const login = () => setUser("Alice_Dev");
-    const logout = () => setUser(null);
-
-    return (
-        <UserContext.Provider value={{ user, login, logout }}>
-            {children}
-        </UserContext.Provider>
-    );
-};
-
-// 3. Consumer Component
-const UserStatus = () => {
-    const context = useContext(UserContext);
-    const { dict } = useLanguage();
-    if (!context) return null;
-    const { user, login, logout } = context;
-
-    return (
-        <div className="p-6 bg-slate-900 border border-slate-700 rounded-xl flex items-center justify-between">
-            <div>
-                {user ? (
-                    <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-fuchsia-400 bg-clip-text text-transparent">
-                        {dict.lessons.context.welcome} {user}!
-                    </span>
-                ) : (
-                    <span className="text-slate-500 italic">Guest User</span>
-                )}
-            </div>
-            <button
-                onClick={user ? logout : login}
-                className={`px-6 py-2 rounded-lg font-bold transition-colors ${user
-                        ? 'bg-slate-700 hover:bg-slate-600 text-slate-200'
-                        : 'bg-purple-600 hover:bg-purple-700 text-white'
-                    }`}
-            >
-                {user ? dict.lessons.context.logout : dict.lessons.context.login}
-            </button>
-        </div>
-    );
-};
+import { UserProvider } from './UserContext';
+import UserStatus from './UserStatus';
 
 export default function ContextPage() {
     const { dict } = useLanguage();
@@ -68,27 +22,122 @@ export default function ContextPage() {
 
             <section className="bg-slate-800/30 p-6 rounded-2xl border border-slate-700/50">
                 <h2 className="text-2xl font-semibold text-purple-400 mb-4">{t.demoTitle}</h2>
-                <p className="text-slate-400 mb-4">{t.desc}</p>
+                <p className="text-slate-400 mb-6">{t.desc}</p>
 
-                {/* Wrapping the demo component with Provider locally */}
+                {/* Real separate provider */}
                 <UserProvider>
                     <UserStatus />
                 </UserProvider>
 
-                <div className="mt-8">
-                    <CodeBlock
-                        title="UserContext.tsx"
-                        code={`// 1. Create Context
+                <div className="mt-8 space-y-8">
+                    <p className="text-slate-300 border-b border-slate-700 pb-4">
+                        {t.splitTitle}
+                    </p>
+
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                        {/* 1. The Setup */}
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-semibold text-purple-400 flex items-center gap-2">
+                                <span className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs text-center border border-purple-500/30">1</span>
+                                Context Logic
+                            </h3>
+                            <CodeBlock
+                                title={t.fileContext}
+                                code={`'use client';
+import { createContext, useState, useContext } from 'react';
+
 const UserContext = createContext(null);
 
-// 2. Wrap App with Provider
-<UserContext.Provider value={{ user, login }}>
-   <App />
-</UserContext.Provider>
+export function UserProvider({ children }) {
+    const [user, setUser] = useState(null);
+    const login = () => setUser("Alice_Dev");
+    const logout = () => setUser(null);
 
-// 3. Use in Any Child
-const { user } = useContext(UserContext);`}
-                    />
+    return (
+        <UserContext.Provider value={{ user, login, logout }}>
+            {children}
+        </UserContext.Provider>
+    );
+}
+
+export function useUser() {
+    return useContext(UserContext);
+}`}
+                            />
+                        </div>
+
+                        {/* 2. The Consumer */}
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-semibold text-pink-400 flex items-center gap-2">
+                                <span className="flex items-center justify-center w-6 h-6 rounded-full bg-pink-500/20 text-pink-400 text-xs text-center border border-pink-500/30">2</span>
+                                Consumer Component
+                            </h3>
+                            <CodeBlock
+                                title={t.fileConsumer}
+                                code={`'use client';
+import { useUser } from './UserContext';
+
+export default function UserStatus() {
+    const { user, login, logout } = useUser();
+
+    return (
+        <div className="flex gap-4">
+            <p>User: {user || 'Guest'}</p>
+            <button onClick={user ? logout : login}>
+                {user ? 'Logout' : 'Login'}
+            </button>
+        </div>
+    );
+}`}
+                            />
+                        </div>
+
+                        {/* 3. Usage Option A */}
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-semibold text-teal-400 flex items-center gap-2">
+                                <span className="flex items-center justify-center w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-xs text-center border border-teal-500/30">3A</span>
+                                Option: Wrap Page
+                            </h3>
+                            <CodeBlock
+                                title={t.filePage}
+                                code={`import { UserProvider } from './UserContext';
+import UserStatus from './UserStatus';
+
+export default function Page() {
+    return (
+        <UserProvider>
+            <UserStatus />
+        </UserProvider>
+    );
+}`}
+                            />
+                        </div>
+
+                        {/* 4. Usage Option B */}
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-semibold text-emerald-400 flex items-center gap-2">
+                                <span className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-xs text-center border border-emerald-500/30">3B</span>
+                                Option: Wrap Global (Layout)
+                            </h3>
+                            <CodeBlock
+                                title={t.fileLayout}
+                                code={`// src/app/layout.tsx
+import { UserProvider } from './UserContext';
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <UserProvider>
+           {children}
+        </UserProvider>
+      </body>
+    </html>
+  );
+}`}
+                            />
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>

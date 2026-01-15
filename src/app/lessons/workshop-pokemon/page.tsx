@@ -32,7 +32,23 @@ export default function WorkshopPokemonPage() {
     // 2. Search Function
     const handleSearch = async (e?: React.FormEvent) => {
         if (e) e.preventDefault();
-        if (!searchTerm) return;
+        
+        // If empty search, fetch offset 20 list
+        if (!searchTerm.trim()) {
+            setLoading(true);
+            setError('');
+            setPokemon(null);
+            try {
+                const res = await axios.get('https://pokeapi.co/api/v2/pokemon?offset=20&limit=20');
+                setPokemonList(res.data.results);
+            } catch (err) {
+                console.error(err);
+                setError('Failed to fetch list');
+            } finally {
+                setLoading(false);
+            }
+            return;
+        }
 
         setLoading(true);
         setError('');
@@ -256,6 +272,26 @@ useEffect(() => {
     setLoading(false); // Stop loading indicator
   }
 };`}
+                    />
+                </section>
+
+                <section>
+                    <h3 className="text-xl font-semibold text-yellow-400 mb-4">{t.renderTitle || '3. Rendering List (Map)'}</h3>
+                    <CodeBlock
+                        title="RenderList.tsx"
+                        code={`{/* Map through the array and return JSX for each item */}
+{pokemonList.map((p, index) => {
+    const id = p.url.split('/').filter(Boolean).pop();
+    return (
+        <button key={p.name} onClick={() => searchById(id)}>
+            <img 
+               src={\`https://.../sprites/pokemon/\${id}.png\`} 
+               alt={p.name} 
+            />
+            <span>{p.name}</span>
+        </button>
+    )
+})}`}
                     />
                 </section>
             </div>

@@ -1,148 +1,11 @@
 'use client';
 
-import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import CodeBlock from '@/components/CodeBlock';
 import { useLanguage } from '@/context/LanguageContext';
-
-// --- 1. Create Slice (Redux Toolkit) ---
-// In a real app, this would be in 'features/counterSlice.ts'
-const counterSlice = createSlice({
-    name: 'counter',
-    initialState: { value: 0 },
-    reducers: {
-        increment: (state) => { state.value += 1; },
-        decrement: (state) => { state.value -= 1; },
-        reset: (state) => { state.value = 0; },
-    },
-});
-
-const { increment, decrement, reset } = counterSlice.actions;
-
-// --- 1.2 User Slice (For Global State Demo) ---
-const userSlice = createSlice({
-    name: 'user',
-    initialState: { name: 'Guest', role: 'Visitor' },
-    reducers: {
-        updateProfile: (state, action) => {
-            state.name = action.payload.name;
-            state.role = action.payload.role;
-        }
-    }
-});
-const { updateProfile } = userSlice.actions;
-
-// --- 2. Create Store ---
-// In a real app, this would be in 'store.ts'
-const store = configureStore({
-    reducer: {
-        counter: counterSlice.reducer,
-        user: userSlice.reducer
-    },
-});
-
-// Define RootState type for TypeScript
-type RootState = ReturnType<typeof store.getState>;
-
-// --- 3. Create Component using Hooks ---
-function CounterInfo() {
-    const count = useSelector((state: RootState) => state.counter.value);
-    const { dict } = useLanguage();
-    return (
-        <span className="text-6xl font-black text-white mb-6 tabular-nums animate-fade-in">
-            {count}
-        </span>
-    );
-}
-
-function CounterControls() {
-    const dispatch = useDispatch();
-    const { dict } = useLanguage();
-    const t = dict.lessons.stateRedux;
-
-    return (
-        <div className="flex gap-2 w-full">
-            <button
-                onClick={() => dispatch(decrement())}
-                className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors font-bold"
-            >
-                {t.dec}
-            </button>
-            <button
-                onClick={() => dispatch(reset())}
-                className="flex-1 py-3 bg-slate-800 hover:bg-red-900/50 text-red-400 rounded-lg transition-colors font-bold"
-            >
-                {t.reset}
-            </button>
-            <button
-                onClick={() => dispatch(increment())}
-                className="flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors font-bold shadow-lg shadow-purple-900/20"
-            >
-                {t.inc}
-            </button>
-        </div>
-    );
-}
-
-// --- 4. User Components (Global State Demo) ---
-function UserCard() {
-    const user = useSelector((state: RootState) => state.user);
-    const { dict } = useLanguage();
-    const t = dict.lessons.stateRedux;
-
-    return (
-        <div className="bg-slate-800 p-6 rounded-xl border border-blue-500/30 flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-2xl font-bold text-white shadow-lg shadow-blue-500/20">
-                {user.name.charAt(0)}
-            </div>
-            <div>
-                <p className="text-sm text-blue-400 font-bold uppercase tracking-wider">{t.cardTitle}</p>
-                <h3 className="text-xl font-bold text-white">{user.name}</h3>
-                <p className="text-slate-400 text-sm">{user.role}</p>
-            </div>
-        </div>
-    );
-}
-
-function UserEditor() {
-    const dispatch = useDispatch();
-    const { dict } = useLanguage();
-    const t = dict.lessons.stateRedux;
-
-    const handleUpdate = (e: React.FormEvent) => {
-        e.preventDefault();
-        const form = e.target as HTMLFormElement;
-        const name = (form.elements.namedItem('username') as HTMLInputElement).value;
-        const role = (form.elements.namedItem('role') as HTMLSelectElement).value;
-        dispatch(updateProfile({ name, role }));
-        form.reset();
-    };
-
-    return (
-        <form onSubmit={handleUpdate} className="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
-            <p className="text-sm text-slate-500 font-bold uppercase tracking-wider mb-2">{t.editTitle}</p>
-            <div className="space-y-2">
-                <input
-                    name="username"
-                    placeholder={t.userName}
-                    className="w-full bg-slate-900 border border-slate-700 px-4 py-2 rounded-lg text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                    required
-                />
-                <select
-                    name="role"
-                    className="w-full bg-slate-900 border border-slate-700 px-4 py-2 rounded-lg text-white focus:ring-2 focus:ring-blue-500 outline-none appearance-none"
-                >
-                    <option value="Visitor">Visitor</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Developer">Developer</option>
-                </select>
-            </div>
-            <button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-lg transition-all">
-                {t.updateProfile}
-            </button>
-        </form>
-    );
-}
+import { store } from './store';
+import { CounterInfo, CounterControls } from './Counter';
+import { UserCard, UserEditor } from './UserProfile';
 
 export default function ReduxPage() {
     const { dict } = useLanguage();
@@ -198,10 +61,27 @@ export default function ReduxPage() {
                             <CounterControls />
                         </div>
                     </Provider>
+                </section>
+            </div>
 
-                    <CodeBlock
-                        title="RealRedux.tsx"
-                        code={`// 1. Setup Slice (Reducer + Actions)
+            {/* Split Code View */}
+            <div className="mt-8 space-y-8">
+                <p className="text-slate-300 border-b border-slate-700 pb-4">
+                    {t.splitTitle}
+                </p>
+
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                    {/* 1. Store & Logic */}
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-purple-400 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-xs text-center border border-purple-500/30">1</span>
+                            Store & Slice
+                        </h3>
+                        <CodeBlock
+                            title={t.fileStore}
+                            code={`import { configureStore, createSlice } from '@reduxjs/toolkit';
+
+// 1. Create Slice
 const counterSlice = createSlice({
   name: 'counter',
   initialState: { value: 0 },
@@ -211,15 +91,28 @@ const counterSlice = createSlice({
     reset: s => { s.value = 0 }
   }
 });
-const { increment, decrement, reset } = counterSlice.actions;
+export const { increment, decrement, reset } = counterSlice.actions;
 
-// 2. Create Store
-const store = configureStore({
+// 2. Configure Store
+export const store = configureStore({
   reducer: { counter: counterSlice.reducer }
-});
+});`}
+                        />
+                    </div>
 
-// 3. Connect to UI (Components)
-function Counter() {
+                    {/* 2. Consumer */}
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-pink-400 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-pink-500/20 text-pink-400 text-xs text-center border border-pink-500/30">2</span>
+                            Components
+                        </h3>
+                        <CodeBlock
+                            title={t.fileCounter}
+                            code={`'use client';
+import { useDispatch, useSelector } from 'react-redux';
+import { increment } from './store';
+
+export function Counter() {
   const count = useSelector(state => state.counter.value);
   const dispatch = useDispatch();
 
@@ -229,22 +122,42 @@ function Counter() {
         <button onClick={() => dispatch(increment())}>+</button>
     </>
   )
-}
+}`}
+                        />
+                    </div>
 
-// 4. Wrap App
-<Provider store={store}>
-  <Counter />
-</Provider>`}
-                    />
-                </section>
+                    {/* 3. Page Provider */}
+                    <div className="col-span-1 xl:col-span-2 space-y-4">
+                        <h3 className="text-lg font-semibold text-teal-400 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-xs text-center border border-teal-500/30">3</span>
+                            Usage in Page
+                        </h3>
+                        <CodeBlock
+                            title={t.filePage}
+                            code={`'use client';
+import { Provider } from 'react-redux';
+import { store } from './store';
+import { Counter } from './Counter';
+
+export default function Page() {
+  return (
+    <Provider store={store}>
+      <Counter />
+    </Provider>
+  );
+}`}
+                        />
+                    </div>
+                </div>
             </div>
+
             {/* Example 2: Global User State */}
             <section className="border-t border-slate-700 pt-8 mt-8">
                 <h2 className="text-2xl font-semibold text-white mb-2">{t.globalTitle}</h2>
                 <p className="text-slate-400 mb-8 max-w-2xl">{t.globalDesc}</p>
 
                 <Provider store={store}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start mb-8">
                         {/* Component A: Admin Panel (Update) */}
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 mb-2">
@@ -267,6 +180,64 @@ function Counter() {
                         </div>
                     </div>
                 </Provider>
+                
+                {/* User Code View */}
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 pt-8 border-t border-slate-700/50">
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-orange-400 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-orange-500/20 text-orange-400 text-xs text-center border border-orange-500/30">4</span>
+                            User Slice (store.ts)
+                        </h3>
+                        <CodeBlock
+                            title={t.fileUserSlice}
+                            code={`// src/app/lessons/state-redux/store.ts
+const userSlice = createSlice({
+    name: 'user',
+    initialState: { name: 'Guest', role: 'Visitor' },
+    reducers: {
+        updateProfile: (state, action) => {
+            state.name = action.payload.name;
+            state.role = action.payload.role;
+        }
+    }
+});
+export const { updateProfile } = userSlice.actions;`}
+                        />
+                    </div>
+
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-blue-400 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs text-center border border-blue-500/30">5</span>
+                            Components (UserProfile.tsx)
+                        </h3>
+                        <CodeBlock
+                            title={t.fileUserComponents}
+                            code={`// src/app/lessons/state-redux/UserProfile.tsx
+export function UserCard() {
+    const user = useSelector((state: RootState) => state.user);
+    return (
+        <div>
+            <h3>{user.name}</h3>
+            <p>{user.role}</p>
+        </div>
+    );
+}
+
+export function UserEditor() {
+    const dispatch = useDispatch();
+    const handleUpdate = (e) => {
+        // ... get name & role from form
+        dispatch(updateProfile({ name, role }));
+    };
+    return (
+        <form onSubmit={handleUpdate}>
+           {/* Inputs... */}
+        </form>
+    );
+}`}
+                        />
+                    </div>
+                </div>
             </section>
         </div>
     );

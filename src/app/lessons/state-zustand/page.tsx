@@ -1,15 +1,12 @@
 'use client';
 
-import { useState } from 'react';
 import CodeBlock from '@/components/CodeBlock';
 import { useLanguage } from '@/context/LanguageContext';
+import BearCounter from './BearCounter';
 
 export default function ZustandPage() {
     const { dict } = useLanguage();
     const t = dict.lessons.stateZustand;
-
-    // Simulation of Zustand Store
-    const [bears, setBears] = useState(0);
 
     return (
         <div className="space-y-8">
@@ -52,55 +49,89 @@ export default function ZustandPage() {
                 <section className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700">
                     <h2 className="text-2xl font-semibold text-white mb-4">{t.demoTitle}</h2>
                     <p className="text-slate-400 mb-6">{t.demoDesc}</p>
+                    <BearCounter />
+                </section>
+            </div>
 
-                    <div className="flex flex-col items-center justify-center p-8 bg-slate-900 rounded-xl border border-slate-700 mb-6 relative overflow-hidden">
-                        {/* Bear Background Animation */}
-                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
-                            <span style={{ fontSize: '150px' }}>🐻</span>
-                        </div>
+            {/* Split Code View */}
+            <div className="mt-8 space-y-8">
+                <p className="text-slate-300 border-b border-slate-700 pb-4">
+                    {t.splitTitle}
+                </p>
 
-                        <span className="text-slate-500 text-sm uppercase tracking-widest mb-2">{t.bears}</span>
-                        <span className="text-6xl font-black text-yellow-400 mb-6 tabular-nums relative z-10">{bears}</span>
-                        <div className="flex gap-2 w-full relative z-10">
-                            <button
-                                onClick={() => setBears(bears + 1)}
-                                className="flex-1 py-3 bg-yellow-600 hover:bg-yellow-500 text-black rounded-lg transition-colors font-bold"
-                            >
-                                {t.addBear}
-                            </button>
-                            <button
-                                onClick={() => setBears(Math.max(0, bears - 1))}
-                                className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors font-bold"
-                            >
-                                {t.removeBear}
-                            </button>
-                            <button
-                                onClick={() => setBears(0)}
-                                className="px-4 py-3 bg-slate-800 hover:bg-red-900/50 text-red-400 rounded-lg transition-colors font-bold"
-                            >
-                                x
-                            </button>
-                        </div>
-                    </div>
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                    {/* 1. Store */}
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-yellow-400 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs text-center border border-yellow-500/30">1</span>
+                            Store Definition
+                        </h3>
+                        <CodeBlock
+                            title={t.fileStore}
+                            code={`import { create } from 'zustand';
 
-                    <CodeBlock
-                        title="store.ts (Zustand)"
-                        code={`import { create } from 'zustand'
+interface BearState {
+  bears: number;
+  addBear: () => void;
+  removeBear: () => void;
+  removeAllBears: () => void;
+}
 
-const useStore = create((set) => ({
+export const useStore = create<BearState>((set) => ({
   bears: 0,
   addBear: () => set((state) => ({ bears: state.bears + 1 })),
   removeBear: () => set((state) => ({ bears: state.bears - 1 })),
   removeAllBears: () => set({ bears: 0 }),
-}))
+}));`}
+                        />
+                    </div>
 
-// Usage in Component
-function BearCounter() {
-  const bears = useStore((state) => state.bears)
-  return <h1>{bears} bears</h1>
+                    {/* 2. Component */}
+                    <div className="space-y-4">
+                        <h3 className="text-lg font-semibold text-emerald-400 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-xs text-center border border-emerald-500/30">2</span>
+                            Usage in Component
+                        </h3>
+                        <CodeBlock
+                            title={t.fileComponent}
+                            code={`'use client';
+import { useStore } from './store';
+
+export default function BearCounter() {
+  const { bears, addBear, removeBear, removeAllBears } = useStore();
+
+  return (
+    <div>
+      <h1>{bears} bears</h1>
+      <button onClick={addBear}>Add Bear</button>
+      <button onClick={removeBear}>Remove Bear</button>
+      <button onClick={removeAllBears}>Clear</button>
+    </div>
+  );
 }`}
-                    />
-                </section>
+                        />
+                    </div>
+
+                    {/* 3. Page */}
+                    <div className="col-span-1 xl:col-span-2 space-y-4">
+                        <h3 className="text-lg font-semibold text-blue-400 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs text-center border border-blue-500/30">3</span>
+                            Main Page
+                        </h3>
+                        <CodeBlock
+                            title={t.filePage}
+                            code={`import BearCounter from './BearCounter';
+
+export default function Page() {
+  return (
+    <div className="p-10">
+       <BearCounter />
+    </div>
+  )
+}`}
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     );

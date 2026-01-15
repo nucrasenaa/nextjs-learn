@@ -5,14 +5,13 @@ import axios from 'axios';
 import CodeBlock from '@/components/CodeBlock';
 import { useLanguage } from '@/context/LanguageContext';
 
-interface Post {
-    id: number;
-    title: string;
-    body: string;
+interface Pokemon {
+    name: string;
+    url: string;
 }
 
 export default function AxiosPage() {
-    const [posts, setPosts] = useState<Post[]>([]);
+    const [posts, setPosts] = useState<Pokemon[]>([]);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState<string>('Idle');
 
@@ -24,10 +23,10 @@ export default function AxiosPage() {
         setStatus('Requesting...');
 
         // Axios automatically transforms JSON data
-        axios.get('https://jsonplaceholder.typicode.com/posts?_limit=3')
+        axios.get('https://pokeapi.co/api/v2/pokemon?limit=3')
             .then((response) => {
                 setStatus(`Success! Status: ${response.status}`);
-                setPosts(response.data);
+                setPosts(response.data.results);
             })
             .catch((error) => {
                 setStatus(`Error: ${error.message}`);
@@ -58,13 +57,15 @@ export default function AxiosPage() {
                 </ul>
 
                 <CodeBlock
-                    title="AxiosExample.tsx"
-                    code={`import axios from 'axios';
+                    title="AxiosPokemon.tsx"
+                    code={`import { useState } from 'react';
+import axios from 'axios';
 
-axios.get('/api/posts')
+const [pokemon, setPokemon] = useState([]);
+
+axios.get('https://pokeapi.co/api/v2/pokemon?limit=3')
   .then(res => {
-    // res.data is already the object/array
-    console.log(res.data);
+    setPokemon(res.data.results);
   })
   .catch(err => {
     console.error(err);
@@ -89,10 +90,10 @@ axios.get('/api/posts')
                     <div className="bg-slate-900 min-h-[200px] rounded-xl border border-slate-700/50 p-4">
                         {posts.length > 0 ? (
                             <div className="space-y-3">
-                                {posts.map((post) => (
-                                    <div key={post.id} className="bg-slate-800 p-4 rounded-lg border border-slate-700 hover:border-orange-500/50 transition-colors">
-                                        <h4 className="font-bold text-orange-200 mb-2 truncate">{post.title}</h4>
-                                        <p className="text-sm text-slate-400 line-clamp-2">{post.body}</p>
+                                {posts.map((post, i) => (
+                                    <div key={i} className="bg-slate-800 p-4 rounded-lg border border-slate-700 hover:border-orange-500/50 transition-colors">
+                                        <h4 className="font-bold text-orange-200 mb-2 truncate capitalize">{post.name}</h4>
+                                        <p className="text-sm text-slate-400 line-clamp-2">{post.url}</p>
                                     </div>
                                 ))}
                             </div>

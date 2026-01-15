@@ -4,15 +4,13 @@ import { useState } from 'react';
 import CodeBlock from '@/components/CodeBlock';
 import { useLanguage } from '@/context/LanguageContext';
 
-interface User {
-    id: number;
+interface Pokemon {
     name: string;
-    email: string;
-    website: string;
+    url: string;
 }
 
 export default function FetchPage() {
-    const [data, setData] = useState<User[] | null>(null);
+    const [data, setData] = useState<Pokemon[] | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +24,7 @@ export default function FetchPage() {
 
         try {
             // Native fetch API
-            const response = await fetch('https://jsonplaceholder.typicode.com/users?_limit=3');
+            const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=3');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -36,7 +34,7 @@ export default function FetchPage() {
 
             // Simulate delay for demo purposes
             setTimeout(() => {
-                setData(result);
+                setData(result.results);
                 setLoading(false);
             }, 1000);
 
@@ -64,16 +62,16 @@ export default function FetchPage() {
                 </p>
 
                 <CodeBlock
-                    title="FetchExample.tsx"
-                    code={`const [data, setData] = useState(null);
+                    title="FetchPokemon.tsx"
+                    code={`const [pokemon, setPokemon] = useState(null);
 const [loading, setLoading] = useState(false);
 
 const fetchData = async () => {
   setLoading(true);
   try {
-    const res = await fetch('https://api.../users');
+    const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=3');
     const json = await res.json();
-    setData(json);
+    setPokemon(json.results); // PokeAPI returns { results: [...] }
   } catch (error) {
     console.error(error);
   } finally {
@@ -110,13 +108,13 @@ const fetchData = async () => {
 
                         {data && !loading && (
                             <div className="space-y-3 animate-pulse-fade-in">
-                                {data.map((user) => (
-                                    <div key={user.id} className="bg-slate-800 p-4 rounded-lg flex justify-between items-center border border-slate-700 hover:border-emerald-500/50 transition-colors">
+                                {data.map((poke, index) => (
+                                    <div key={index} className="bg-slate-800 p-4 rounded-lg flex justify-between items-center border border-slate-700 hover:border-emerald-500/50 transition-colors">
                                         <div>
-                                            <h3 className="font-bold text-slate-200">{user.name}</h3>
-                                            <p className="text-sm text-slate-400">{user.email}</p>
+                                            <h3 className="font-bold text-slate-200 capitalize">{poke.name}</h3>
+                                            <p className="text-sm text-slate-400">{poke.url}</p>
                                         </div>
-                                        <span className="text-xs px-2 py-1 bg-slate-700 rounded text-slate-400">ID: {user.id}</span>
+                                        <span className="text-xs px-2 py-1 bg-slate-700 rounded text-slate-400">Index: {index + 1}</span>
                                     </div>
                                 ))}
                             </div>

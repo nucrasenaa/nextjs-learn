@@ -14,6 +14,7 @@ export default function Navigation() {
         { name: dict.nav.home, path: '/', icon: '🏠' },
         { name: dict.nav.variables, path: '/lessons/variables', icon: '📦' },
         { name: dict.nav.state, path: '/lessons/state', icon: '⚡' },
+        { name: dict.nav.tsxFundamentals, path: '/lessons/tsx-fundamentals', icon: '⚛️' },
         { name: dict.nav.effects, path: '/lessons/effects', icon: '✨' },
         { name: dict.nav.fetch, path: '/lessons/fetching-fetch', icon: '🌐' },
         { name: dict.nav.axios, path: '/lessons/fetching-axios', icon: '📡' },
@@ -29,6 +30,12 @@ export default function Navigation() {
         { name: dict.nav.cssLayout, path: '/lessons/css-layout', icon: '📐' },
         { name: dict.nav.cssResponsive, path: '/lessons/css-responsive', icon: '📱' },
         { name: dict.nav.cssAnimation, path: '/lessons/css-animation', icon: '🎨' },
+        { name: dict.nav.uiAdvanced, path: '/lessons/ui-advanced', icon: '💎' },
+        { name: dict.nav.framerMotion, path: '/lessons/framer-motion', icon: '🎬' },
+        // Full Stack Sections
+        { name: dict.nav.formValidation, path: '/lessons/form-validation', icon: '📝' },
+        { name: dict.nav.specialFiles, path: '/lessons/special-files', icon: '🚦' },
+        { name: dict.nav.auth, path: '/lessons/auth', icon: '🔐' },
     ];
 
     return (
@@ -76,15 +83,18 @@ export default function Navigation() {
                     const active = isActive || isHome;
 
                     // Add separate between Basic, Advanced and CSS
-                    const isAdvancedStart = index === 6;
-                    // Adjusted index because we added 3 advanced items (Redux/Zustand/Workshop)
-                    const isCssStart = index === 13;
+                    // Index 0-6 (7 items) -> Advanced starts at index 7 (routing)
+                    const isAdvancedStart = index === 7; 
+                    // Index 7-13 (7 items) -> CSS starts at index 14 (cssLayout)
+                    const isCssStart = index === 14;
+                    // Index 14-18 (5 items) -> Full Stack starts at index 19 (formValidation)
+                    const isFullStackStart = index === 19;
 
                     return (
-                        <li key={item.path} className={(isAdvancedStart || isCssStart) ? "mt-4 border-t border-slate-800 pt-4" : ""}>
-                            {(isAdvancedStart || isCssStart) && !isCollapsed && (
+                        <li key={item.path} className={(isAdvancedStart || isCssStart || isFullStackStart) ? "mt-4 border-t border-slate-800 pt-4" : ""}>
+                            {(isAdvancedStart || isCssStart || isFullStackStart) && !isCollapsed && (
                                 <div className="px-2 mb-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">
-                                    {isAdvancedStart ? 'Advanced' : 'UI & Animations'}
+                                    {isAdvancedStart ? 'Advanced' : isCssStart ? 'UI & Animations' : 'Full Stack'}
                                 </div>
                             )}
                             <Link
