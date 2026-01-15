@@ -1,0 +1,109 @@
+'use client';
+
+import { useState } from 'react';
+import axios from 'axios';
+import CodeBlock from '@/components/CodeBlock';
+import { useLanguage } from '@/context/LanguageContext';
+
+interface Post {
+    id: number;
+    title: string;
+    body: string;
+}
+
+export default function AxiosPage() {
+    const [posts, setPosts] = useState<Post[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [status, setStatus] = useState<string>('Idle');
+
+    const { dict } = useLanguage();
+    const t = dict.lessons.axios;
+
+    const fetchPosts = () => {
+        setLoading(true);
+        setStatus('Requesting...');
+
+        // Axios automatically transforms JSON data
+        axios.get('https://jsonplaceholder.typicode.com/posts?_limit=3')
+            .then((response) => {
+                setStatus(`Success! Status: ${response.status}`);
+                setPosts(response.data);
+            })
+            .catch((error) => {
+                setStatus(`Error: ${error.message}`);
+                console.error(error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
+    return (
+        <div className="space-y-8">
+            <div>
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent mb-4">
+                    {t.title}
+                </h1>
+                <p className="text-lg text-slate-300">
+                    {t.intro}
+                </p>
+            </div>
+
+            <section className="bg-slate-800/30 p-6 rounded-2xl border border-slate-700/50">
+                <h2 className="text-2xl font-semibold text-orange-400 mb-4">{t.vsTitle}</h2>
+                <ul className="list-disc list-inside text-slate-400 mb-6 space-y-2">
+                    {t.features.map((feature, i) => (
+                        <li key={i}>{feature}</li>
+                    ))}
+                </ul>
+
+                <CodeBlock
+                    title="AxiosExample.tsx"
+                    code={`import axios from 'axios';
+
+axios.get('/api/posts')
+  .then(res => {
+    // res.data is already the object/array
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.error(err);
+  });`}
+                />
+
+                <div className="mt-8">
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-lg font-bold text-white">{t.demoTitle}</h3>
+                        <div className="flex items-center space-x-4">
+                            <span className="text-sm font-mono text-slate-500">{status}</span>
+                            <button
+                                onClick={fetchPosts}
+                                disabled={loading}
+                                className="px-6 py-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium"
+                            >
+                                {loading ? '...' : t.fetchBtn}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="bg-slate-900 min-h-[200px] rounded-xl border border-slate-700/50 p-4">
+                        {posts.length > 0 ? (
+                            <div className="space-y-3">
+                                {posts.map((post) => (
+                                    <div key={post.id} className="bg-slate-800 p-4 rounded-lg border border-slate-700 hover:border-orange-500/50 transition-colors">
+                                        <h4 className="font-bold text-orange-200 mb-2 truncate">{post.title}</h4>
+                                        <p className="text-sm text-slate-400 line-clamp-2">{post.body}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-center h-full text-slate-500">
+                                {t.clickToLoad}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </section>
+        </div>
+    );
+}
